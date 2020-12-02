@@ -1,24 +1,6 @@
 const User = require('./models/User');
 const Organization = require('./models/Organization')
 
-/* const endpoint = async (req, res) => {
-    const { 
-        parameter
-    } = req.body;
-    const leagues = [];
-
-    let success = true;
-
-    if(success)
-    {
-        res.status(200).json(parameter);
-    }
-    else
-    {
-        res.status(400).json({error: 'Invalid Password'});
-    }
-}; */
-
 const create = async (req, res) => {
     const {
         username, 
@@ -46,31 +28,7 @@ const create = async (req, res) => {
                 isReciever,
                 finStatus
             });
-        }
-    } catch(error) {
-        res.status(400).json({error: error.message});
-    }
-}
-
-const createOrg = async (req, res) => {
-    const {
-        name, 
-        description
-    } = req.body;
-    try {
-        const exists = await Organization.findOne({'username': name});
-        if(exists)
-        {
-            res.status(400).json({error: 'Organization Already Exists'});
-        }
-        else
-        {
-            funds = 319824;
-            const account = await Organization.create({
-                name, 
-                description,
-                funds
-            });
+            res.status(200).json(account);
         }
     } catch(error) {
         res.status(400).json({error: error.message});
@@ -139,7 +97,6 @@ const addFundsOrg = async (req, res) => {
            await user.save()
            await organization.save()
            res.status(200).json(user);
-           res.status(200).json(organization);
         }
     } catch(error) {
         res.status(400).json({error: error.message});
@@ -186,6 +143,7 @@ const makeReceiver = async (req, res) => {
             }
             user.isReciever = true
             await user.save()
+            res.status(200);
         } else {
             res.status(400).json({error: 'Already a Reciever'});
         }
@@ -243,13 +201,34 @@ const giveToReceivers = async (req, res) => {
     }
 }
 
+const getFunds = async (req, res) => {
+    const {
+        username
+    } = req.body;
+    try {
+        const user = await User.findOne({"username": username});
+        res.status(200).json(user.funds);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}
+
+const getOrgs = async (req, res) => {
+    try {
+        const orgs = await Organization.find({});
+        res.status(200).json(orgs);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}
+
 module.exports = {
-    //endpoint
     create,
-    createOrg,
     verify, 
     addFunds,
     addFundsOrg, 
     makeReceiver,
-    giveToReceivers
+    giveToReceivers,
+    getFunds,
+    getOrgs
 };

@@ -12,9 +12,9 @@ server.use(express.json());
 
 server.use('/api/routes', routes);
 
-mongoose.connect('mongodb+srv://dev:passwordneu@neucrh.ilq4p.mongodb.net/?retryWrites=true&w=majority&appName=neucrh').then(() => {
+mongoose.connect('mongodb+srv://api:apikey@cluster0.6haop.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0').then(() => {
     console.log('connected');
-    server.listen(3000, () => {
+    server.listen(4000, () => {
         console.log('listening');
     });
 }).catch((error) => {
